@@ -38,8 +38,7 @@ my $idempotency_cmd_make =
 print "IDEMPOTENCY_HASH=" . `$idempotency_cmd` . "\n";
 
 my $arch_obs_dir = "_\$(PREFIX)_obs";
-print "$arch_obs_dir:\n\t";
-print "mkdir $arch_obs_dir\n";
+print "CHEAT_PRE_MAKE := \$(shell mkdir -p $arch_obs_dir)\n";
 
 foreach $file (@files) {
   my $c_file = $file;
@@ -54,7 +53,7 @@ foreach $file (@files) {
   my $deps_as_join = join(" ", @deps);
 
   # Emit the rule to make the object file.
-  print "$obj_file: $arch_obs_dir $deps_as_join\n\t";
+  print "$obj_file: $deps_as_join\n\t";
   print '$(CC) -c ' . $c_file . ' -o ' . $obj_file . ' $(CFLAGS)' . "\n\n";
 
   # Emit the rule to make the assembly file.

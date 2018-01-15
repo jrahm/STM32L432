@@ -8,10 +8,10 @@ LD_FLAGS?=-T linker/linker_script.ld -nostdlib --cref -Map linker/main.map -stat
 
 all: _$(PREFIX)_obs/main.elf
 
-_$(PREFIX)_obs/main.bin: main.elf
+_$(PREFIX)_obs/main.bin: _$(PREFIX)_obs/main.elf
 	$(PREFIX)objcopy -O binary _$(PREFIX)_obs/main.elf _$(PREFIX)_obs/main.bin
 
-flash: main.bin
+flash: _$(PREFIX)_obs/main.bin
 	st-flash write _$(PREFIX)_obs/main.bin 0x8000000
 
 clean:
