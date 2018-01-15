@@ -18,16 +18,23 @@ sub header_deps {
   return @headers;
 }
 
-my @files = glob('./*.c');
+my @files = glob('*.c');
 my @obj_files;
 
-open(my $fh, '<:encoding(UTF-8)', "Makefile.preamble") or die "Missing Makefile.preamble";
+open(my $fh, '<:encoding(UTF-8)', "Makefile.preamble")
+    or die "Missing Makefile.preamble";
+
 while (<$fh>) {
   print "$_";
 }
 
+# Emit a rule that will rerun genmake if the c files do not match.
+my $idempotency_cmd="ls *.c *.h| sha1sum | awk '{print \$ 1}'";
+my $idempotency_cmd_make="ls *.c *.h | sha1sum | awk '{print \$\$1}'";
+print "IDEMPOTENCY_HASH=" . `$idempotency_cmd` . "\n";
+
 foreach $file (@files) {
-  (my $file_no_ext = $file) =~ s/^\.\/(.*)\.c$/\1/g;
+  (my $file_no_ext = $file) =~ s/\.c$//g;
 
   my $obj_file = "${file_no_ext}.o";
   my $c_file = "${file_no_ext}.c";
@@ -48,5 +55,8 @@ foreach $file (@files) {
 }
 
 my $obj_files_deps = join(' ', @obj_files);
-print "main.elf: $obj_files_deps linker_script.ld\n\t";
-print '$(LD) -o main.elf $(LD_FLAGS) ' . "$obj_files_deps\n\n";
+print "FORCE:\n\t\n\n";
+print "main.elf: FORCE $obj_files_deps linker_script.ld\n\t";
+print "([ \"\$\$($idempotency_cmd_make)\" != \"\$(IDEMPOTENCY_HASH)\" ] "
+        . "&& ./genmake.pl > Makefile && make main.elf ) "
+        . "|| " . '$(LD) -o main.elf $(LD_FLAGS) ' . "$obj_files_deps\n\n";
