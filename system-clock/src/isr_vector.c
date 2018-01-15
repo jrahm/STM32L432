@@ -5,9 +5,46 @@
 /* Forward-declare the main function. This is implemented in main.c. */
 void main();  
 
+
+/* These are defined in the linker script. */
+extern uint8_t INIT_DATA_VALUES;
+extern uint8_t DATA_SEGMENT_START;
+extern uint8_t DATA_SEGMENT_STOP;
+extern uint8_t BSS_START;
+extern uint8_t BSS_END;
+
+
+/*
+ * Runs before main. Initializes the data and bss segments by loading them
+ * into memory.
+ */
+void init()
+{
+  uint8_t* src;
+  uint8_t* dest;
+
+  src = &INIT_DATA_VALUES;
+  dest = &DATA_SEGMENT_START;
+
+  /* Copy the values from flash into the data segment. */
+  while (dest != &DATA_SEGMENT_STOP) {
+    *(dest ++) = *(src ++);
+  }
+
+  /* Everything in the BSS segment is set to zero. */
+  dest = &BSS_START;
+  while (dest != &BSS_END) {
+    *(dest ++) = 0;
+  }
+
+
+  /* Jump to main. */
+  main();
+}
+
 const void* vectors[] __attribute__((section(".vectors"))) = {
   (void *) 0x2000c000, /* Top of stack at top of sram1. 48k */
-  main,                /* Reset handler */
+  init,                 /* Reset handler */
   unhandled_isr,        /* NMI */
   unhandled_isr,        /* Hard Fault */
   unhandled_isr,        /* MemManage */
