@@ -1,0 +1,21 @@
+OPT?=-O
+PREFIX?=arm-unknown-eabi-
+CC=$(PREFIX)gcc
+LD=$(PREFIX)ld
+CFLAGS?=$(OPT) -mcpu=cortex-m4 -mthumb -g -lgcc -static -nostartfiles
+LD_FLAGS?=-T linker_script.ld -nostdlib --cref -Map main.map -static
+
+
+all: main.elf
+
+main.bin: main.elf
+	$(PREFIX)objcopy -O binary main.elf main.bin
+
+flash: main.bin
+	st-flash write main.bin 0x8000000
+
+clean:
+	rm -f *.o *.elf *.bin
+
+genmake:
+	./genmake.pl > Makefile
