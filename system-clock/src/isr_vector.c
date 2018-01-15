@@ -7,11 +7,11 @@ void main();
 
 
 /* These are defined in the linker script. */
-extern uint8_t INIT_DATA_VALUES;
-extern uint8_t DATA_SEGMENT_START;
-extern uint8_t DATA_SEGMENT_STOP;
-extern uint8_t BSS_START;
-extern uint8_t BSS_END;
+extern uint32_t INIT_DATA_VALUES;
+extern uint32_t DATA_SEGMENT_START;
+extern uint32_t DATA_SEGMENT_STOP;
+extern uint32_t BSS_START;
+extern uint32_t BSS_END;
 
 
 /*
@@ -20,8 +20,8 @@ extern uint8_t BSS_END;
  */
 void init()
 {
-  uint8_t* src;
-  uint8_t* dest;
+  uint32_t* src;
+  uint32_t* dest;
 
   src = &INIT_DATA_VALUES;
   dest = &DATA_SEGMENT_START;

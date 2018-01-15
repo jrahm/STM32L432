@@ -22,11 +22,15 @@ SECTIONS
     DATA_SEGMENT_START = .;
     *(.data);
     DATA_SEGMENT_STOP = .;
+
+    /* Align by 4 so we can optimize the copier to use uint32's. */
+    . = ALIGN(0x04);
   } >sram1 AT>flash
 
   BSS_START = .;
   .bss : {
     *(.bss);
+    . = ALIGN(0x04);
   } > sram1
   BSS_END = .;
 }
