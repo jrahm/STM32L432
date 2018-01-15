@@ -2,8 +2,8 @@ OPT?=-O
 PREFIX?=arm-unknown-eabi-
 CC=$(PREFIX)gcc
 LD=$(PREFIX)ld
-CFLAGS?=$(OPT) -mcpu=cortex-m4 -mthumb -g -lgcc -static -nostartfiles
-LD_FLAGS?=-T linker_script.ld -nostdlib --cref -Map main.map -static
+CFLAGS?=$(OPT) -mcpu=cortex-m4 -mthumb -g -lgcc -static -nostartfiles -Iinclude
+LD_FLAGS?=-T linker/linker_script.ld -nostdlib --cref -Map linker/main.map -static
 
 
 all: _$(PREFIX)_obs/main.elf

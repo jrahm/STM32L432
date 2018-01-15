@@ -87,18 +87,18 @@ OUTPUT(_arm-unknown-eabi-_obs/main.elf elf32-littlearm)
 .debug_ranges   0x0000000000000000       0x20
  .debug_ranges  0x0000000000000000       0x20 _arm-unknown-eabi-_obs/clock.o
 
-.debug_line     0x0000000000000000      0x403
- .debug_line    0x0000000000000000      0x15d _arm-unknown-eabi-_obs/clock.o
- .debug_line    0x000000000000015d      0x103 _arm-unknown-eabi-_obs/gpio.o
- .debug_line    0x0000000000000260      0x1a3 _arm-unknown-eabi-_obs/main.o
+.debug_line     0x0000000000000000      0x427
+ .debug_line    0x0000000000000000      0x169 _arm-unknown-eabi-_obs/clock.o
+ .debug_line    0x0000000000000169      0x10f _arm-unknown-eabi-_obs/gpio.o
+ .debug_line    0x0000000000000278      0x1af _arm-unknown-eabi-_obs/main.o
 
-.debug_str      0x0000000000000000      0x38c
- .debug_str     0x0000000000000000      0x176 _arm-unknown-eabi-_obs/clock.o
-                                        0x1bc (size before relaxing)
- .debug_str     0x0000000000000176      0x1e1 _arm-unknown-eabi-_obs/gpio.o
-                                        0x2cf (size before relaxing)
- .debug_str     0x0000000000000357       0x35 _arm-unknown-eabi-_obs/main.o
-                                        0x27a (size before relaxing)
+.debug_str      0x0000000000000000      0x398
+ .debug_str     0x0000000000000000      0x17a _arm-unknown-eabi-_obs/clock.o
+                                        0x1c0 (size before relaxing)
+ .debug_str     0x000000000000017a      0x1e5 _arm-unknown-eabi-_obs/gpio.o
+                                        0x2d3 (size before relaxing)
+ .debug_str     0x000000000000035f       0x39 _arm-unknown-eabi-_obs/main.o
+                                        0x27e (size before relaxing)
 
 .comment        0x0000000000000000       0x3c
  .comment       0x0000000000000000       0x3c _arm-unknown-eabi-_obs/clock.o

@@ -11,14 +11,14 @@ sub header_deps {
     push(@headers, $file);
 
     while (<$fh>) {
-      /#include\s+"(.*)"\s*$/ && push(@headers, header_deps($1));
+      /#include\s+"(.*)"\s*$/ && push(@headers, header_deps("include/$1"));
     }
   }
 
   return @headers;
 }
 
-my @files = glob('*.c');
+my @files = glob('src/*.c');
 my @obj_files;
 
 open(my $fh, '<:encoding(UTF-8)', "Makefile.preamble")
@@ -29,8 +29,12 @@ while (<$fh>) {
 }
 
 # Emit a rule that will rerun genmake if the c files do not match.
-my $idempotency_cmd="ls *.c *.h| sha1sum | awk '{print \$ 1}'";
-my $idempotency_cmd_make="ls *.c *.h | sha1sum | awk '{print \$\$1}'";
+my $idempotency_cmd =
+    "ls src/*.c include/*.h| sha1sum | awk '{print \$1}'";
+
+my $idempotency_cmd_make =
+    "ls src/*.c include/*.h | sha1sum | awk '{print \$\$1}'";
+
 print "IDEMPOTENCY_HASH=" . `$idempotency_cmd` . "\n";
 
 my $arch_obs_dir = "_\$(PREFIX)_obs";
@@ -38,10 +42,10 @@ print "$arch_obs_dir:\n\t";
 print "mkdir $arch_obs_dir\n";
 
 foreach $file (@files) {
-  (my $file_no_ext = $file) =~ s/\.c$//g;
+  my $c_file = $file;
+  (my $file_no_ext = $file) =~ s/src\/(.*)\.c$/\1/g;
 
   my $obj_file = "$arch_obs_dir/${file_no_ext}.o";
-  my $c_file = "${file_no_ext}.c";
   my $s_file = "${file_no_ext}.s";
 
   push(@obj_files, $obj_file);
@@ -60,7 +64,7 @@ foreach $file (@files) {
 
 my $obj_files_deps = join(' ', @obj_files);
 print "FORCE:\n\t\n\n";
-print "$arch_obs_dir/main.elf: FORCE $obj_files_deps linker_script.ld\n\t";
+print "$arch_obs_dir/main.elf: FORCE $obj_files_deps linker/linker_script.ld\n\t";
 print "([ \"\$\$($idempotency_cmd_make)\" != \"\$(IDEMPOTENCY_HASH)\" ] "
         . "&& ./genmake.pl > Makefile && make main.elf ) "
         . "|| "
