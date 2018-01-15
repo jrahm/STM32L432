@@ -33,10 +33,14 @@ my $idempotency_cmd="ls *.c *.h| sha1sum | awk '{print \$ 1}'";
 my $idempotency_cmd_make="ls *.c *.h | sha1sum | awk '{print \$\$1}'";
 print "IDEMPOTENCY_HASH=" . `$idempotency_cmd` . "\n";
 
+my $arch_obs_dir = "_\$(PREFIX)_obs";
+print "$arch_obs_dir:\n\t";
+print "mkdir $arch_obs_dir\n";
+
 foreach $file (@files) {
   (my $file_no_ext = $file) =~ s/\.c$//g;
 
-  my $obj_file = "${file_no_ext}.o";
+  my $obj_file = "$arch_obs_dir/${file_no_ext}.o";
   my $c_file = "${file_no_ext}.c";
   my $s_file = "${file_no_ext}.s";
 
@@ -46,7 +50,7 @@ foreach $file (@files) {
   my $deps_as_join = join(" ", @deps);
 
   # Emit the rule to make the object file.
-  print "$obj_file: $deps_as_join\n\t";
+  print "$obj_file: $arch_obs_dir $deps_as_join\n\t";
   print '$(CC) -c ' . $c_file . ' -o ' . $obj_file . ' $(CFLAGS)' . "\n\n";
 
   # Emit the rule to make the assembly file.
@@ -56,7 +60,8 @@ foreach $file (@files) {
 
 my $obj_files_deps = join(' ', @obj_files);
 print "FORCE:\n\t\n\n";
-print "main.elf: FORCE $obj_files_deps linker_script.ld\n\t";
+print "$arch_obs_dir/main.elf: FORCE $obj_files_deps linker_script.ld\n\t";
 print "([ \"\$\$($idempotency_cmd_make)\" != \"\$(IDEMPOTENCY_HASH)\" ] "
         . "&& ./genmake.pl > Makefile && make main.elf ) "
-        . "|| " . '$(LD) -o main.elf $(LD_FLAGS) ' . "$obj_files_deps\n\n";
+        . "|| "
+        . "\$(LD) -o $arch_obs_dir/main.elf \$(LD_FLAGS) $obj_files_deps\n\n";

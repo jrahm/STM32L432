@@ -6,16 +6,16 @@ CFLAGS?=$(OPT) -mcpu=cortex-m4 -mthumb -g -lgcc -static -nostartfiles
 LD_FLAGS?=-T linker_script.ld -nostdlib --cref -Map main.map -static
 
 
-all: main.elf
+all: _$(PREFIX)_obs/main.elf
 
-main.bin: main.elf
-	$(PREFIX)objcopy -O binary main.elf main.bin
+_$(PREFIX)_obs/main.bin: main.elf
+	$(PREFIX)objcopy -O binary _$(PREFIX)_obs/main.elf _$(PREFIX)_obs/main.bin
 
 flash: main.bin
-	st-flash write main.bin 0x8000000
+	st-flash write _$(PREFIX)_obs/main.bin 0x8000000
 
 clean:
-	rm -f *.o *.elf *.bin
+	rm -rf _*_obs
 
 genmake:
 	./genmake.pl > Makefile
