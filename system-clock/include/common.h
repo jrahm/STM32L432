@@ -9,5 +9,6 @@
 #define bool int
 
 #define PACKED __attribute__((packed))
+#define BIT(n) (1 << (n))
 
 #endif /* COMMON_H */

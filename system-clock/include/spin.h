@@ -10,7 +10,7 @@
  * is a 0. Each independent flashing is succeced by a break of 4 times that
  * of a long flash.
  */
-void spin(uint8_t code);
+void spin(uint32_t base_delay, uint8_t code);
 
 
 

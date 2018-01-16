@@ -1,4 +1,5 @@
 #include "gpio.h"
+#include "rcc.h"
 
 /*
  * Sets the mode of a pin on a gpio por.
@@ -38,11 +39,9 @@ void set_gpio_output_pin(
 }
 
 #define GPIO_PORTS_BASE_ADDR   ((uint32_t)0x48000000)
-#define RCC_BASE               ((uint32_t)0x40021000)
-#define RCC_AHB2ENR (*((__IO uint32_t*) (RCC_BASE + 0x4c)))
 __IO gpio_port_t* enable_gpio(gpio_port_number_t gpio_port_number)
 {
-  RCC_AHB2ENR |= 1 << gpio_port_number; /* Enable the port. */
+  RCC.ahb2en_r |= 1 << gpio_port_number; /* Enable the GPIO port. */
   return
       (__IO gpio_port_t*) (GPIO_PORTS_BASE_ADDR + (gpio_port_number * 0x400));
 }
