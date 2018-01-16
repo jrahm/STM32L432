@@ -1,0 +1,19 @@
+Welcome to Level 1
+------------------
+
+This is a VERY simple program for the STM32L432 Nucleo-32 board. It simply
+iterates turning on the status led (LD3) and the pin D6.
+
+There is NO clock setting or anything, everything is the default bootup.
+
+There is a single source file, main.c, which defines all the code needed.
+
+There is a linker script which sets up the binary format properly ready to
+be flashed.
+
+This code can be flashed with
+
+  $ make flash
+
+this requires the program `st-flash` which is a part of the stlink programmer,
+which can be found at https://github.com/texane/stlink.git.
