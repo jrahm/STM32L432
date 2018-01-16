@@ -72,44 +72,6 @@ int configure_pll(
   return 0;
 }
   
-
-
-int set_sys_clock_to_hsi()
-{
-  /* Turn on the HSI, and wait for it to come up. */
-  RCC.c_r |= BIT(8);
-  while(RCC.c_r & BIT(9));
-
-  /* Use the HSI. */
-  RCC.cfg_r |= BIT(0);
-  return 0;
-}
-
-int set_sys_clock_to_pll()
-{
-  RCC.c_r &= ~BIT(24); /* set PLL to OFF. */
-
-  RCC.pllcfg_r =
-    BIT(24) | /* Enable PLLR. This is for system clock output. */
-    /* Set PLLM to 2 and PLLN to 10. This gives us a 10/2 multiplier. */
-    (10 << 8) | /* Set PLLN to 10. */
-    (0 << 4)  | /* Set PLLM to 2. */
-    /* Set the input to be HSI16. */
-    BIT(1);
-
-
-  RCC.c_r |= BIT(24); /* Turn PLL on. */
-  while(!(RCC.c_r & BIT(25))); /* Wait for PLL to be ready. */
-
-  /* Configure the flash to have 4 wait states. This is required at
-   * 80 MHz. */
-  FLASH.ac_r &= ~0x07;
-  FLASH.ac_r |= 0x04;
-
-  /* Set the PLL as the system clock. */
-  RCC.cfg_r = 0x3;
-}
-
 int set_system_clock_MHz(uint8_t mhz)
 {
   /* Set the source of the system colck to MSI temporarily. */
