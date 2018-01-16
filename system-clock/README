@@ -1,0 +1,17 @@
+This is much more complex than the simple hello script, but most is boiler plate
+designed to make future debugging easier. The first addition is a genmake
+system where a Makefile may be generated with the command
+`./genmake.pl > Makefile` and subsequently with `make genmake`. This will add
+build rules for each `c` file.
+
+There are some added features as well:
+
+* This code loads values properly from the data and bss segments into memory so
+  global variables and global constants may be used.
+
+* This code can properly set the system clock, and does get a full 80MHz out
+  of it.
+
+* This code has a `spin()` function that flashes a "morse code" translation
+  of a binary error code. (1's are dashes, 0's are dots). Gives minimal feedback
+  until such a time where USART is implemented.
