@@ -36,16 +36,16 @@ typedef struct GPIO_PORT_STR {
  * the stm32l432.
  */
 typedef enum GPIO_PIN_ENUM {
-  PIN_0  = 0,
-  PIN_1  = 1,
-  PIN_2  = 2,
-  PIN_3  = 3,
-  PIN_4  = 4,
-  PIN_5  = 5,
-  PIN_6  = 6,
-  PIN_7  = 7,
-  PIN_8  = 8,
-  PIN_9  = 9,
+  PIN_0 = 0,
+  PIN_1 = 1,
+  PIN_2 = 2,
+  PIN_3 = 3,
+  PIN_4 = 4,
+  PIN_5 = 5,
+  PIN_6 = 6,
+  PIN_7 = 7,
+  PIN_8 = 8,
+  PIN_9 = 9,
   PIN_10 = 10,
   PIN_11 = 11,
   PIN_12 = 12,
@@ -58,10 +58,10 @@ typedef enum GPIO_PIN_ENUM {
  * Enum defining the pin modes that are possible.
  */
 typedef enum {
-  MODE_INPUT     = 0,
-  MODE_OUTPUT    = 1,
+  MODE_INPUT = 0,
+  MODE_OUTPUT = 1,
   MODE_ALTERNATE = 2,
-  MODE_ANALOG    = 3
+  MODE_ANALOG = 3
 } gpio_pin_mode_t;
 
 /*
@@ -90,17 +90,14 @@ typedef struct {
  * pin_mode: the mode to set the pin to.
  */
 void set_gpio_pin_mode(
-    __IO gpio_port_t* gpio_port,
-    gpio_pin_t pin,
-    gpio_pin_mode_t pin_mode);
+    __IO gpio_port_t* gpio_port, gpio_pin_t pin, gpio_pin_mode_t pin_mode);
 
 /*
  * Sets the given GPIO pin to be an output pin. Returns an output_pin struct
  * corresponding to
  */
 gpio_output_pin_t set_gpio_pin_output(
-    __IO gpio_port_t* gpio_port,
-    gpio_pin_t pin);
+    __IO gpio_port_t* gpio_port, gpio_pin_t pin);
 
 /*
  * Sets an output pin on or off.
@@ -108,21 +105,16 @@ gpio_output_pin_t set_gpio_pin_output(
  * pin: the pin to toggle.
  * onoff: 0 for off, non-zero of on.
  */
-void set_gpio_output_pin(
-    gpio_output_pin_t pin,
-    bool onoff);
+void set_gpio_output_pin(gpio_output_pin_t pin, bool onoff);
 
-#define pin_on(p) \
-  set_gpio_output_pin(p, 1)
+#define pin_on(p) set_gpio_output_pin(p, 1)
 
-#define pin_off(p) \
-  set_gpio_output_pin(p, 0)
+#define pin_off(p) set_gpio_output_pin(p, 0)
 
 /*
  * Enables a GPIO port and returns a reference to the register definition
  * of that GPIO port.
  */
 __IO gpio_port_t* enable_gpio(gpio_port_number_t number);
-
 
 #endif /* GPIO_H__ */

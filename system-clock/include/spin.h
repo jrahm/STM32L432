@@ -12,6 +12,4 @@
  */
 void spin(uint32_t base_delay, uint8_t code);
 
-
-
 #endif /* H__SPIN_ */

@@ -1,6 +1,6 @@
-#include "gpio.h"
-#include "delay.h"
 #include "clock.h"
+#include "delay.h"
+#include "gpio.h"
 #include "spin.h"
 
 volatile uint32_t delay_amt = 20000000 / 4;
@@ -18,7 +18,7 @@ int main()
   set_system_clock_MHz(80);
 
   uint32_t count = 0;
-  while(1) {
+  while (1) {
     /* Set the GPIO pin to high. */
     pin_off(pin1);
     pin_off(pin3);
@@ -31,6 +31,6 @@ int main()
     pin_on(pin3);
     delay(delay_amt);
 
-    ++ count;
+    ++count;
   }
 }

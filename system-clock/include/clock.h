@@ -4,12 +4,11 @@
 #include <stdint.h>
 #include "rcc.h"
 
-#define PERIPH_BASE    ((uint32_t)       0x40000000)
-#define AHBPERIPH_BASE (PERIPH_BASE +    0x00020000)
-#define FLASH_R_BASE   (AHBPERIPH_BASE + 0x00003C00)
-#define PWR_BASE       (PERIPH_BASE + 0x7000)
-#define  PWR_CSR_VOSF                        ((uint16_t)0x0010)     /*!< Voltage Scaling select flag */
-
+#define PERIPH_BASE ((uint32_t)0x40000000)
+#define AHBPERIPH_BASE (PERIPH_BASE + 0x00020000)
+#define FLASH_R_BASE (AHBPERIPH_BASE + 0x00003C00)
+#define PWR_BASE (PERIPH_BASE + 0x7000)
+#define PWR_CSR_VOSF ((uint16_t)0x0010) /*!< Voltage Scaling select flag */
 
 #ifndef __IO
 #define __IO volatile
@@ -29,26 +28,25 @@ typedef struct {
 //   __IO uint32_t optkeyr;
 //   __IO uint32_t sr;
 //   __IO uint32_t obr;
-//   __IO uint32_t wrpr;       
+//   __IO uint32_t wrpr;
 // } flash_t;
 
 // #define FLASH (*(flash_t*) (FLASH_R_BASE))
-#define PWR (*(pwr_t*) (PWR_BASE))
-
+#define PWR (*(pwr_t*)(PWR_BASE))
 
 /* Valid values for the PLLR/PLLQ bits of the PLLCFG register. */
 typedef enum {
-  PLL_DIVISOR_2   = 1,
-  PLL_DIVISOR_4   = 3,
-  PLL_DIVISOR_6   = 5,
-  PLL_DIVISOR_8   = 7,
+  PLL_DIVISOR_2 = 1,
+  PLL_DIVISOR_4 = 3,
+  PLL_DIVISOR_6 = 5,
+  PLL_DIVISOR_8 = 7,
   PLL_DIVISOR_OFF = 0,
 } pll_divisor_t;
 
 /* Valid values for the PLLP bits off the PLLCFG register. */
-typedef enum  {
-  PLLP_DIVISOR_7   = 1,
-  PLLP_DIVISOR_17  = 3,
+typedef enum {
+  PLLP_DIVISOR_7 = 1,
+  PLLP_DIVISOR_17 = 3,
   PLLP_DIVISOR_OFF = 0,
 } pllp_divisor_t;
 
@@ -67,9 +65,9 @@ typedef enum {
 /* Possible sources for the input clock. */
 typedef enum {
   PLL_SRC_NONE = 0,
-  PLL_SRC_MSI  = 1,
-  PLL_SRC_HSI  = 2,
-  PLL_SRC_HSE  = 3,
+  PLL_SRC_MSI = 1,
+  PLL_SRC_HSI = 2,
+  PLL_SRC_HSE = 3,
 } pll_src_t;
 
 /* Valid sources for the system clock. */
@@ -110,12 +108,11 @@ int set_system_clock_src(system_clock_src_t src);
  * Configure the PLL.
  */
 int configure_pll(
-    uint8_t pllp_div_factor,
-    pll_divisor_t  pllr,  /* System clock divisor. */
-    pll_divisor_t  pllq,  /* Divison factor for PLL48M1CLK. */
-    pllp_divisor_t pllp,  /* Divison factor for PLLSAI2CLK. */
-    uint8_t        plln,  /* PLL numerator. */
-    pllm_divisor_t pllm,  /* PLL denominator. */
-    pll_src_t      pllsrc /* PLL source */ );
+    uint8_t pllp_div_factor, pll_divisor_t pllr, /* System clock divisor. */
+    pll_divisor_t pllq,  /* Divison factor for PLL48M1CLK. */
+    pllp_divisor_t pllp, /* Divison factor for PLLSAI2CLK. */
+    uint8_t plln,        /* PLL numerator. */
+    pllm_divisor_t pllm, /* PLL denominator. */
+    pll_src_t pllsrc /* PLL source */);
 
 #endif /* CLOCK_H__ */

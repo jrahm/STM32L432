@@ -11,7 +11,6 @@
  */
 extern const void* isr_vector[];
 
-
 /*
  * Defines an error state. This loops forever and defines a distinct flashing
  * pattern to let the user know an unhandled ISR happened.
